@@ -1,0 +1,74 @@
+.filter-dropdown {
+  color: #fff;
+  padding: 8px 30px 9px 15px;
+  border-radius: 4px;
+  margin: 0 10px;
+  font-size: 14px;
+  -webkit-box-shadow: inset 0 0 1px 1px #49ba8e;
+  -ms-box-shadow: inset 0 0 1px 1px #49ba8e;
+  -o-box-shadow: inset 0 0 1px 1px #49ba8e;
+  box-shadow: inset 0 0 1px 1px #49ba8e;
+  min-width: 150px;
+  z-index: 40;
+  cursor: pointer;
+}
+
+.cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  /* justify-content: space-between; */
+}
+
+.event-card {
+  margin: 20px 40px;
+}
+
+.event-name {
+  font-size: 14px;
+  color: #fff;
+  text-align: left;
+}
+
+.date {
+  position: absolute;
+  min-width: 42px;
+  border-radius: 50%;
+  font-size: 11px;
+  color: #fff;
+  background-color: #4fd7a2;
+  text-align: center;
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+  top: 10px;
+  right: -220px;
+}
+
+.votes-count-and-text {
+  margin-right: 5px;
+  /* margin: 0;
+  padding: 0;
+  border: 0;
+  font-weight: 400;
+  vertical-align: baseline;
+  background: 0 0; */
+}
+
+.votes-and-like-section {
+  display: flex;
+  flex-direction: column;
+  color: #fff;
+  font-size: 13px;
+  position: absolute;
+  bottom: 10px;
+  /* left: 30px; */
+  right: -100px;
+}
+
+.card-anchor {
+  position: relative;
+}
+
+.like-percentage {
+  font-size: 20px;
+}
