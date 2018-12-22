@@ -84,7 +84,7 @@ class Assign1 extends Component {
     } = this.state;
 
     return (
-      <div>
+      <div className="Assign2-container">
         <section>
           <span>Exsisting List </span>
           {toEnableExsistingMode && (
