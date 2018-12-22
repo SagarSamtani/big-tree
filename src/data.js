@@ -1,5 +1,6 @@
 export default [
   [
+    'All Languages',
     'Hindi',
     'English',
     'Tamil',

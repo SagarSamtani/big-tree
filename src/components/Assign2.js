@@ -7,48 +7,29 @@ class Assign2 extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      cardsData: null,
+      cardsData: jsonData[1],
       isLoaded: true,
-      error: false
+      error: false,
+      firstFilterValue: 0,
+      secondFilterValue: 'All Languages',
+      thirdFilterValue: 'All Generes'
     };
   }
 
   componentDidMount() {
-    let apiData = {
-      url: 'https://in.bookmyshow.com/serv/getData?cmd=GETTRAILERS&mtype=cs',
-      configData: {
-        mode: 'no-cors',
-        headers: {
-          'Content-Type': 'text/html; charset=UTF-8',
-          'cache-control': 'no-cache',
-          redirect: 'follow',
-          referrer: 'no-referrer'
-        }
-      }
-    };
+    // let apiData = {
+    //   url: 'https://in.bookmyshow.com/serv/getData?cmd=GETTRAILERS&mtype=cs',
+    //   configData: {
+    //     mode: 'no-cors',
+    //     headers: {
+    //       'Content-Type': 'text/html; charset=UTF-8',
+    //       'cache-control': 'no-cache',
+    //       redirect: 'follow',
+    //       referrer: 'no-referrer'
+    //     }
+    //   }
+    // };
 
-    var data = null;
-
-    var xhr = new XMLHttpRequest();
-    xhr.withCredentials = true;
-
-    xhr.addEventListener('readystatechange', function() {
-      if (this.readyState === 4) {
-        console.log(this.responseText);
-      }
-    });
-
-    xhr.open(
-      'GET',
-      'https://in.bookmyshow.com/serv/getData?cmd=GETTRAILERS&mtype=cs'
-    );
-    xhr.setRequestHeader('cache-control', 'no-cache');
-    xhr.setRequestHeader(
-      'postman-token',
-      'a03a6084-b1c1-5249-de2d-202227dd688e'
-    );
-
-    xhr.send(data);
     // fetch(apiData.url, apiData.configData)
     //   .then(response => {
     //     console.log('res', response);
@@ -70,13 +51,59 @@ class Assign2 extends Component {
     //   );
   }
 
+  getOptions = (optionsArray) => {
+    return optionsArray.map((item , index)=> {
+        return <option value={item} key={index}>{item}</option>;
+    });
+  };
+
+  handleSelectChange = (filterOrder, event) => {
+    this.setState({
+      [`${filterOrder}FilterValue`]: event.target.value,
+    }, this.filterTheCardsData);
+  };
+
+  getOptionsForThrirdFilter = () => {
+    console.log('jsonData', jsonData);
+    let eventsData = this.state.cardsData, allGeneres = ['All Generes'];
+    for(let key in eventsData) {
+      const eventGenere = eventsData[key].EventGenre.split('|');
+      for(let i=0,len=eventGenere.length; i<len; i++){
+        !(allGeneres.indexOf(eventGenere[i]) > -1) 
+        && allGeneres.push(eventGenere[i]);
+      }
+    }
+    return this.getOptions(allGeneres);
+  };
+
+  filterTheCardsData = () => {
+    let filteredResult = [],
+    { secondFilterValue, thirdFilterValue } = this.state;
+
+    if(secondFilterValue === 'All Languages' && thirdFilterValue === 'All Generes'){
+      this.setState({cardsData: jsonData[1]});
+    } else {
+      const eventsData = jsonData[1];
+      for(let key in eventsData) {
+        ((secondFilterValue === eventsData[key].EventLanguage && thirdFilterValue === 'All Generes')
+        || (secondFilterValue === 'All Languages' && eventsData[key].EventGenre.split('|').indexOf(thirdFilterValue) > -1)
+        || (secondFilterValue === eventsData[key].EventLanguage && eventsData[key].EventGenre.split('|').indexOf(thirdFilterValue) > -1))
+        && filteredResult.push(eventsData[key]);
+        
+      }
+      this.setState({cardsData: [...filteredResult]});
+    }
+  };
+
   render() {
-    const { error, isLoaded } = this.state,
-      cardsData = jsonData[1],
+    const { cardsData, error, isLoaded, firstFilterValue, secondFilterValue, thirdFilterValue } = this.state,
       Cards = Object.keys(cardsData).map((key, index) => {
         return <Card key={index} cardData={cardsData[key]} />;
-      });
-
+      }),
+      firstFilterOptions = this.getOptions(['Popular', 'Fresh']),
+      secondFilterOptions = this.getOptions(jsonData[0]),
+      thirdFilterOptions = this.getOptionsForThrirdFilter();
+      
     if (error) {
       return <div>Error: {error.message}</div>;
     } else if (!isLoaded) {
@@ -94,17 +121,14 @@ class Assign2 extends Component {
               </button>
             </div>
             <div className="right-header-section">
-                <select className="right-dropdwons">
-                  <option>1</option>
-                  <option>2</option>
+                <select value={firstFilterValue} className="right-dropdwons" onChange={event=>{this.handleSelectChange('first', event)}}>
+                  {firstFilterOptions}
                 </select>
-              <select className="right-dropdwons">
-                  <option>1</option>
-                  <option>2</option>
+                <select value={secondFilterValue} className="right-dropdwons" onChange={event=>{this.handleSelectChange('second', event)}}>
+                  {secondFilterOptions}
                 </select>
-                <select className="right-dropdwons">
-                  <option>1</option>
-                  <option>2</option>
+                <select value={thirdFilterValue} className="right-dropdwons" onChange={event=>{this.handleSelectChange('third', event)}}>
+                  {thirdFilterOptions}
                 </select>
             </div>
           </div>

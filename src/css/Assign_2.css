@@ -74,9 +74,12 @@
 }
 
 .trailer-header {
+  align-items: center;
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
+  background-color: #000;
+  height: 70px;
 }
 
 .left-btns {
@@ -94,10 +97,11 @@
   display: flex;
   justify-content: space-evenly;
   flex-wrap: wrap;
+  align-items: center;
 }
 
 .right-dropdwons {
-  color: #fff;
+  color: #4fd7a2;
   padding: 8px 30px 9px 15px;
   border-radius: 4px;
   margin: 0 10px;
@@ -109,4 +113,6 @@
   min-width: 140px;
   z-index: 40;
   cursor: pointer;
+  background-color: #282c34;
+  height: 40px;
 }
