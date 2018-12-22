@@ -86,39 +86,26 @@ class Assign2 extends Component {
         <div>
           <div className="trailer-header">
             <div className="left-header-section">
-              <button className="coming-soon-btn" onClick={this.comingSoon}>
+              <button className="coming-soon-btn left-btns" onClick={this.comingSoon}>
                 Coming Soon
               </button>
-              <button className="now-showing-btn" onClick={this.nowShowing}>
+              <button className="now-showing-btn left-btns" onClick={this.nowShowing}>
                 Now Showing
               </button>
             </div>
             <div className="right-header-section">
-              <div className="first-filter-dropdown filter-dropdown btn-group">
-                <button
-                  type="button"
-                  className="btn btn-success dropdown-toggle"
-                  data-toggle="dropdown"
-                  aria-haspopup="true"
-                  aria-expanded="false">
-                  All Languages
-                </button>
-                <div className="dropdown-menu">
-                  <span className="dropdown-item">1</span>
-                  <span className="dropdown-item">2</span>
-                  <span className="dropdown-item">3</span>
-                </div>
-              </div>
-              <div className="second-filter-dropdown filter-dropdown">
-                <button
-                  type="button"
-                  className="btn btn-success dropdown-toggle"
-                  data-toggle="dropdown"
-                  aria-haspopup="true"
-                  aria-expanded="false">
-                  Fresh
-                </button>
-              </div>
+                <select className="right-dropdwons">
+                  <option>1</option>
+                  <option>2</option>
+                </select>
+              <select className="right-dropdwons">
+                  <option>1</option>
+                  <option>2</option>
+                </select>
+                <select className="right-dropdwons">
+                  <option>1</option>
+                  <option>2</option>
+                </select>
             </div>
           </div>
           <div className="cards-container">{Cards}</div>
