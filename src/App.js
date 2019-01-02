@@ -34,7 +34,7 @@ class App extends Component {
 
     return (
       <div className="App">
-        {selectedOption ? (
+        {selectedOption && selectedOption !== 2 ? (
           <button onClick={this.moveToLandingPage}>Back to Landing Page</button>
         ) : (
           ''
@@ -47,8 +47,12 @@ class App extends Component {
             </select>
           </section>
         )}
-        {selectedOption === 1 && <Assign1 />}
-        {selectedOption === 2 && <Assign2 />}
+        {selectedOption === 1 && (
+          <Assign1 moveToLandingPage={this.moveToLandingPage} />
+        )}
+        {selectedOption === 2 && (
+          <Assign2 moveToLandingPage={this.moveToLandingPage} />
+        )}
       </div>
     );
   }

@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import jsonData from '../data';
 import Card from './Card';
+import Dropdown from './Dropdown';
 import '../css/Assign_2.css';
 console.log('data', jsonData);
 class Assign2 extends Component {
@@ -12,24 +14,31 @@ class Assign2 extends Component {
       error: false,
       firstFilterValue: 0,
       secondFilterValue: 'All Languages',
-      thirdFilterValue: 'All Generes'
+      thirdFilterValue: 'All Generes',
+      currentPlayingEvent: null,
+      mType: 'cs'
     };
   }
 
   componentDidMount() {
+    this.getAPIData();
+  }
+
+  getAPIData = () => {
     // let apiData = {
-    //   url: 'https://in.bookmyshow.com/serv/getData?cmd=GETTRAILERS&mtype=cs',
+    //   url: `https://in.bookmyshow.com/serv/getData?cmd=GETTRAILERS&mtype=${
+    //     this.state.mType
+    //   }`,
     //   configData: {
     //     mode: 'no-cors',
     //     headers: {
-    //       'Content-Type': 'text/html; charset=UTF-8',
+    //       'Content-Type': 'application/json',
     //       'cache-control': 'no-cache',
     //       redirect: 'follow',
     //       referrer: 'no-referrer'
     //     }
     //   }
     // };
-
     // fetch(apiData.url, apiData.configData)
     //   .then(response => {
     //     console.log('res', response);
@@ -49,28 +58,36 @@ class Assign2 extends Component {
     //       });
     //     }
     //   );
-  }
+  };
 
-  getOptions = (optionsArray) => {
-    return optionsArray.map((item , index)=> {
-        return <option value={item} key={index}>{item}</option>;
+  getOptions = optionsArray => {
+    return optionsArray.map((item, index) => {
+      return (
+        <option value={item} key={index}>
+          {item}
+        </option>
+      );
     });
   };
 
   handleSelectChange = (filterOrder, event) => {
-    this.setState({
-      [`${filterOrder}FilterValue`]: event.target.value,
-    }, this.filterTheCardsData);
+    this.setState(
+      {
+        [`${filterOrder}FilterValue`]: event.target.value
+      },
+      this.filterTheCardsData
+    );
   };
 
   getOptionsForThrirdFilter = () => {
     console.log('jsonData', jsonData);
-    let eventsData = this.state.cardsData, allGeneres = ['All Generes'];
-    for(let key in eventsData) {
+    let eventsData = this.state.cardsData,
+      allGeneres = ['All Generes'];
+    for (let key in eventsData) {
       const eventGenere = eventsData[key].EventGenre.split('|');
-      for(let i=0,len=eventGenere.length; i<len; i++){
-        !(allGeneres.indexOf(eventGenere[i]) > -1) 
-        && allGeneres.push(eventGenere[i]);
+      for (let i = 0, len = eventGenere.length; i < len; i++) {
+        !(allGeneres.indexOf(eventGenere[i]) > -1) &&
+          allGeneres.push(eventGenere[i]);
       }
     }
     return this.getOptions(allGeneres);
@@ -78,32 +95,75 @@ class Assign2 extends Component {
 
   filterTheCardsData = () => {
     let filteredResult = [],
-    { secondFilterValue, thirdFilterValue } = this.state;
+      { secondFilterValue, thirdFilterValue } = this.state;
 
-    if(secondFilterValue === 'All Languages' && thirdFilterValue === 'All Generes'){
-      this.setState({cardsData: jsonData[1]});
+    if (
+      secondFilterValue === 'All Languages' &&
+      thirdFilterValue === 'All Generes'
+    ) {
+      this.setState({ cardsData: jsonData[1] });
     } else {
       const eventsData = jsonData[1];
-      for(let key in eventsData) {
-        ((secondFilterValue === eventsData[key].EventLanguage && thirdFilterValue === 'All Generes')
-        || (secondFilterValue === 'All Languages' && eventsData[key].EventGenre.split('|').indexOf(thirdFilterValue) > -1)
-        || (secondFilterValue === eventsData[key].EventLanguage && eventsData[key].EventGenre.split('|').indexOf(thirdFilterValue) > -1))
-        && filteredResult.push(eventsData[key]);
-        
+      for (let key in eventsData) {
+        ((secondFilterValue === eventsData[key].EventLanguage &&
+          thirdFilterValue === 'All Generes') ||
+          (secondFilterValue === 'All Languages' &&
+            eventsData[key].EventGenre.split('|').indexOf(thirdFilterValue) >
+              -1) ||
+          (secondFilterValue === eventsData[key].EventLanguage &&
+            eventsData[key].EventGenre.split('|').indexOf(thirdFilterValue) >
+              -1)) &&
+          filteredResult.push(eventsData[key]);
       }
-      this.setState({cardsData: [...filteredResult]});
+      this.setState({ cardsData: [...filteredResult] });
     }
   };
 
+  getDropdownOptions = type => {
+    switch (type) {
+      case 'first':
+        return this.getOptions(['Popular', 'Fresh']);
+      case 'second':
+        return this.getOptions(jsonData[0]);
+      case 'third':
+        return this.getOptionsForThrirdFilter();
+      default:
+        break;
+    }
+  };
+
+  setCurrentPlayingEvent = currentPlayingEvent => {
+    this.setState({ currentPlayingEvent });
+  };
+
+  changeMtype = mType => {
+    this.setState({ mType }, this.getAPIData);
+  };
+
   render() {
-    const { cardsData, error, isLoaded, firstFilterValue, secondFilterValue, thirdFilterValue } = this.state,
+    const { cardsData, currentPlayingEvent, error, isLoaded, mType } = this.state,
+      { moveToLandingPage } = this.props,
       Cards = Object.keys(cardsData).map((key, index) => {
-        return <Card key={index} cardData={cardsData[key]} />;
+        return (
+          <Card
+            key={index}
+            cardData={cardsData[key]}
+            setCurrentPlayingEvent={this.setCurrentPlayingEvent}
+          />
+        );
       }),
-      firstFilterOptions = this.getOptions(['Popular', 'Fresh']),
-      secondFilterOptions = this.getOptions(jsonData[0]),
-      thirdFilterOptions = this.getOptionsForThrirdFilter();
-      
+      allDropDowns = ['first', 'second', 'third'].map((item, index) => {
+        return (
+          <Dropdown
+            handleSelectChange={this.handleSelectChange}
+            key={index}
+            options={this.getDropdownOptions(item)}
+            type={item}
+            value={this.state[`${item}FilterValue`]}
+          />
+        );
+      });
+
     if (error) {
       return <div>Error: {error.message}</div>;
     } else if (!isLoaded) {
@@ -113,30 +173,51 @@ class Assign2 extends Component {
         <div>
           <div className="trailer-header">
             <div className="left-header-section">
-              <button className="coming-soon-btn left-btns" onClick={this.comingSoon}>
+              <button
+                className={`left-btns ${mType === 'cs' ? 'btn-active' : 'btn-inactive' }`}
+                onClick={() => {
+                  this.changeMtype('cs');
+                }}>
                 Coming Soon
               </button>
-              <button className="now-showing-btn left-btns" onClick={this.nowShowing}>
+              <button
+                className={`left-btns ${mType === 'ns' ? 'btn-active' : 'btn-inactive' }`}
+                onClick={() => {
+                  this.changeMtype('ns');
+                }}>
                 Now Showing
               </button>
             </div>
             <div className="right-header-section">
-                <select value={firstFilterValue} className="right-dropdwons" onChange={event=>{this.handleSelectChange('first', event)}}>
-                  {firstFilterOptions}
-                </select>
-                <select value={secondFilterValue} className="right-dropdwons" onChange={event=>{this.handleSelectChange('second', event)}}>
-                  {secondFilterOptions}
-                </select>
-                <select value={thirdFilterValue} className="right-dropdwons" onChange={event=>{this.handleSelectChange('third', event)}}>
-                  {thirdFilterOptions}
-                </select>
+              {allDropDowns}
+              <div className="close-entity" onClick={moveToLandingPage}>
+                &#10005;
+              </div>
             </div>
           </div>
+          {currentPlayingEvent && (
+            <div className="trailer-running-container">
+              <div className="playing-trailer">
+                <object
+                  title="hi"
+                  id="hi"
+                  className="video-container"
+                  frameBorder="0"
+                  src={`${currentPlayingEvent.TrailerURL}`}
+                />
+              </div>
+              <div className="event-details">bye</div>
+            </div>
+          )}
           <div className="cards-container">{Cards}</div>
         </div>
       );
     }
   }
 }
+
+Assign2.propTypes = {
+  moveToLandingPage: PropTypes.func
+};
 
 export default Assign2;

@@ -67,6 +67,8 @@
 
 .card-anchor {
   position: relative;
+  display: inline;
+  cursor: pointer;
 }
 
 .like-percentage {
@@ -84,13 +86,26 @@
 
 .left-btns {
   font-size: 12px;
-  background: #f3f3f3;
-  color: #ccc;
   border-radius: 4px;
   padding: 10px 20px;
   margin-right: 15px;
   text-transform: uppercase;
   cursor: pointer;
+}
+
+.btn-inactive {
+  background: #f3f3f3;
+  color: #ccc;
+}
+
+.btn-active {
+  color: #fff;
+  background-color: #28a745;
+  border-color: #28a745;
+}
+
+.left-header-section {
+  margin-left: 10px;
 }
 
 .right-header-section {
@@ -113,6 +128,32 @@
   min-width: 140px;
   z-index: 40;
   cursor: pointer;
-  background-color: #282c34;
+  background-color: #000;
   height: 40px;
+}
+
+.close-entity {
+  cursor: pointer;
+  margin: 10px;
+  color: #A9A9A9;
+}
+
+.trailer-running-container {
+  display: flex;
+  justify-content: space-around;
+}
+
+.playing-trailer {
+  width: 60%;
+  height: 520px;;
+}
+
+.event-details {
+  width: 30%;
+  height: 520px;
+}
+
+.video-container {
+  height: 100%;
+  width: 100%;
 }

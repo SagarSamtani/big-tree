@@ -1,11 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const Card = ({ cardData }) => {
+const Card = ({ cardData, setCurrentPlayingEvent }) => {
   const dateArray = cardData.ShowDate.split(',')[0].split(' ');
   return (
     <div className="event-card">
-      <a className="card-anchor" href={cardData.TrailerURL}>
+      <div
+        className="card-anchor"
+        onClick={() => {
+          setCurrentPlayingEvent(cardData);
+        }}>
         <div className="img-container">
           <img
             src={`https://in.bmscdn.com/events/moviecard/${
@@ -32,13 +36,14 @@ const Card = ({ cardData }) => {
           </span>
         </div>
         <div className="event-name">{cardData.EventName}</div>
-      </a>
+      </div>
     </div>
   );
 };
 
 Card.propTypes = {
-  cardData: PropTypes.object
+  cardData: PropTypes.object,
+  setCurrentPlayingEvent: PropTypes.func
 };
 
 export default Card;
