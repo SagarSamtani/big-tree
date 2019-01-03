@@ -25,39 +25,37 @@ class Assign2 extends Component {
   }
 
   getAPIData = () => {
-    // let apiData = {
-    //   url: `https://in.bookmyshow.com/serv/getData?cmd=GETTRAILERS&mtype=${
-    //     this.state.mType
-    //   }`,
-    //   configData: {
-    //     mode: 'no-cors',
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //       'cache-control': 'no-cache',
-    //       redirect: 'follow',
-    //       referrer: 'no-referrer'
-    //     }
-    //   }
-    // };
+    let apiData = {
+      url: `https://in.bookmyshow.com/serv/getData?cmd=GETTRAILERS&mtype=${
+        this.state.mType
+      }`,
+      configData: {
+        headers: {
+          'Content-Type': 'text/html; charset=UTF-8'
+        }
+      }
+    };
     // fetch(apiData.url, apiData.configData)
-    //   .then(response => {
-    //     console.log('res', response);
-    //   })
-    //   .then(
-    //     result => {
-    //       this.setState({
-    //         isLoaded: true,
-    //         cardsData: result
-    //       });
-    //     },
-    //     // error handling
-    //     error => {
-    //       this.setState({
-    //         isLoaded: true,
-    //         error
-    //       });
-    //     }
-    //   );
+    fetch(apiData.url, apiData.configData)
+      .then(response => {
+        console.log('res', response);
+      })
+      .then(
+        result => {
+          debugger;
+          this.setState({
+            isLoaded: true,
+            cardsData: result
+          });
+        },
+        // error handling
+        error => {
+          this.setState({
+            isLoaded: true,
+            error
+          });
+        }
+      );
   };
 
   getOptions = optionsArray => {
