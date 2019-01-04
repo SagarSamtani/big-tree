@@ -140,8 +140,20 @@ class Assign2 extends Component {
     this.setState({ mType }, this.getAPIData);
   };
 
+  getEventGenere = eventGenre => {
+    return eventGenre.split('|').map(eg => {
+      return <div className="event-genre-tags">{eg}</div>;
+    });
+  };
+
   render() {
-    const { cardsData, currentPlayingEvent, error, isLoaded, mType } = this.state,
+    const {
+        cardsData,
+        currentPlayingEvent,
+        error,
+        isLoaded,
+        mType
+      } = this.state,
       { moveToLandingPage } = this.props,
       Cards = Object.keys(cardsData).map((key, index) => {
         return (
@@ -174,14 +186,18 @@ class Assign2 extends Component {
           <div className="trailer-header">
             <div className="left-header-section">
               <button
-                className={`left-btns ${mType === 'cs' ? 'btn-active' : 'btn-inactive' }`}
+                className={`left-btns ${
+                  mType === 'cs' ? 'btn-active' : 'btn-inactive'
+                }`}
                 onClick={() => {
                   this.changeMtype('cs');
                 }}>
                 Coming Soon
               </button>
               <button
-                className={`left-btns ${mType === 'ns' ? 'btn-active' : 'btn-inactive' }`}
+                className={`left-btns ${
+                  mType === 'ns' ? 'btn-active' : 'btn-inactive'
+                }`}
                 onClick={() => {
                   this.changeMtype('ns');
                 }}>
@@ -198,7 +214,7 @@ class Assign2 extends Component {
           {currentPlayingEvent && (
             <div className="trailer-running-container">
               <div className="playing-trailer">
-                <object
+                <iframe
                   title="hi"
                   id="hi"
                   className="video-container"
@@ -206,7 +222,31 @@ class Assign2 extends Component {
                   src={`${currentPlayingEvent.TrailerURL}`}
                 />
               </div>
-              <div className="event-details">bye</div>
+              <div className="event-details-container">
+                <div className="rs-event-title">
+                  {currentPlayingEvent.EventTitle}
+                </div>
+                <div className="rs-event-language">
+                  {currentPlayingEvent.EventLanguage}
+                </div>
+                <div className="rs-event-genre">
+                  {this.getEventGenere(currentPlayingEvent.EventGenre)}
+                </div>
+                <div className="rs-votes-and-like-section">
+                  <span className="like-icon">{}</span>
+                  <span className="rs-top-section">
+                    <span className="like-percentage">
+                      {currentPlayingEvent.wtsPerc}%
+                    </span>
+                  </span>
+                  <span className="rs-bottom-section">
+                    <span className="votes-count-and-text">
+                      {currentPlayingEvent.wtsCount}
+                    </span>
+                    <span>votes</span>
+                  </span>
+                </div>
+              </div>
             </div>
           )}
           <div className="cards-container">{Cards}</div>

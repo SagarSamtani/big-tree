@@ -91,17 +91,18 @@
   margin-right: 15px;
   text-transform: uppercase;
   cursor: pointer;
+  border: 0;
+  outline: none;
 }
 
 .btn-inactive {
-  background: #f3f3f3;
+  background: #282c34;
   color: #ccc;
 }
 
 .btn-active {
   color: #fff;
   background-color: #28a745;
-  border-color: #28a745;
 }
 
 .left-header-section {
@@ -135,7 +136,7 @@
 .close-entity {
   cursor: pointer;
   margin: 10px;
-  color: #A9A9A9;
+  color: #a9a9a9;
 }
 
 .trailer-running-container {
@@ -145,15 +146,58 @@
 
 .playing-trailer {
   width: 60%;
-  height: 520px;;
+  height: 520px;
 }
 
-.event-details {
+.event-details-container {
   width: 30%;
   height: 520px;
+  color: #fff;
+  text-align: left;
+  background-image: linear-gradient(to right, #2a2521, #273333, #262d2a);
+  min-width: 35%;
+  padding-left: 10px;
 }
 
 .video-container {
   height: 100%;
   width: 100%;
+}
+
+.rs-event-title {
+  font-size: 23px;
+  margin: 10px;
+}
+
+.rs-event-language {
+  font-size: 12px;
+  margin: 10px;
+  text-transform: uppercase;
+  color: #ccc;
+}
+
+.rs-event-genre {
+  font-size: 10px;
+}
+
+.event-genre-tags {
+  border: 1px solid #ccc;
+  border-radius: 30px;
+  color: #ccc;
+  padding: 5px;
+  text-transform: uppercase;
+  width: 75px;
+  text-align: center;
+  display: inline-block;
+  margin: 5px;
+}
+
+.rs-votes-and-like-section {
+  display: flex;
+  flex-direction: column;
+  margin: 10px;
+}
+
+.rs-bottom-section {
+  font-size: 13px;
 }
